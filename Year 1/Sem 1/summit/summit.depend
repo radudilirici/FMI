@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1552217329 source:c:\users\wombat\documents\radu\uni\c+++\summit\main.cpp
+	<iostream>
+	<fstream>
+
