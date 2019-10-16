@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1555755912 source:c:\users\wombat\documents\radu\uni\sem2\lfa\echivalenta\main.cpp
+	<iostream>
+	<fstream>
+	<queue>
+	<set>
+	<map>
+	"lnfa.cpp"
+
+1554306275 c:\users\wombat\documents\radu\uni\sem2\lfa\echivalenta\lnfa.cpp
+	<iostream>
+	<fstream>
+	<string.h>
+	<queue>
+	<set>
+	<map>
+
+1554046754 source:c:\users\wombat\documents\radu\uni\sem2\lfa\echivalenta\lnfa.cpp
+	<iostream>
+	<fstream>
+	<string.h>
+	<queue>
+	<set>
+	<map>
+

@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1552321705 source:c:\users\wombat\documents\radu\uni\sem2\poo\grafuri ponderate\main.cpp
+	<iostream>
+	<fstream>
+	<vector>
+	<queue>
+

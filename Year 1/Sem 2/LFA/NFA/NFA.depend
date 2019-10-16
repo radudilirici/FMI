@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1552316108 source:c:\users\wombat\documents\radu\uni\sem2\lfa\nfa\main.cpp
+	<iostream>
+	<fstream>
+	<string.h>
+	<queue>
+
