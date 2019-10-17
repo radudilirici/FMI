@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1555962038 source:c:\users\mr. wombat\documents\facultate\anul 1\sem 2\lfa\echivalenta\main.cpp
+	<iostream>
+	<fstream>
+	<queue>
+	<set>
+	<map>
+	"lnfa.h"
+
+1555962511 c:\users\mr. wombat\documents\facultate\anul 1\sem 2\lfa\echivalenta\lnfa.h
+	<set>
+	<map>
+
