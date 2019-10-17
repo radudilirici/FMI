@@ -1,0 +1,11 @@
+10
+1 Horia 6 7 8
+2 Mihai 9 8.3 9
+3 Andrei 4.5 5 7
+4 Alex 7.3 8.7 8
+5 Mircea 10 9 9.3
+6 Andreea 9 8.4 8.9
+7 Gabriela 4 5.5 4.75
+8 Maria 8 8 9
+9 Ioana 10 9.9 10
+10 Alexandra 6.3 5 7
