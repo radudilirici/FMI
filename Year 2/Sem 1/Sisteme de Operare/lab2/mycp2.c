@@ -39,11 +39,18 @@ int main(int argc, char **argv)
 			perror("read buf");
 			return errno;
 		}
-		size_t nwrite = write(dst, buf, nread);
-		if (nwrite < 0){
-			printf("eroare scriere\n");
-			perror("write buf");
-			return errno;
+		size_t twrite = 0;
+		while (1){
+			size_t nwrite = write(dst, &(buf[twrite]), nread);
+			if (nwrite < 0){
+				printf("eroare scriere\n");
+				perror("write buf");
+				return errno;
+			}
+			twrite += nwrite;
+			if (twrite == nread){
+				break;
+			}
 		}
 	}
 	close(src);
