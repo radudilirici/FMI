@@ -25,6 +25,7 @@ section {
     display: flex;
     align-items: flex-end;
     flex-wrap: nowrap;
+    transition: background-color 1s;
     /*position: sticky;*/
     /*top: 0;*/
 }
@@ -200,6 +201,10 @@ section {
 }
 .gallery-spacer {
     flex-basis: 5%;
+}
+.wiki-iframe {
+    width: 100%;
+    height: 650px;
 }
 #gallery-table {
     flex-basis: 55%;
