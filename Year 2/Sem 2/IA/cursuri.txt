@@ -1,0 +1,8 @@
+		Curs 1
+
+nota: 50 curs (25 +25)
+	  50 laborator (25 + 25)
+	  la 7 saptamani o sa dam examen si test de laborator
+	  dupa inca 7 saptamani mai dam un examen si o sa avem si un proiect de facut pentru laborator
+
+limbaj de programare pt AI: prologue (limbaj al programarii logice), dar facem in python
