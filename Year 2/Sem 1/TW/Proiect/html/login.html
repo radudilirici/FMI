@@ -1,0 +1,136 @@
+<!--C:\Users\Mr. Wombat\Documents\Facultate\Anul 2\Sem 1\Tehnici Web\Proiect\javascript-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+        section {
+            margin: 0 0 3em 0;
+        }
+        .main-background {
+            background-image: url("https://www.tokkoro.com/picsup/2634909-hellblade-senuas-sacrifice-4k-free-download-hd-wallpaper-for-desktop.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .wrapper {
+            margin: 6vw 9vw;
+            background-color: rgba(0, 10, 15, 0.95);
+        }
+        .button {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            background-color: #23204f;
+            border-style: none;
+        }
+        .button:hover {
+            background-color: #054e6b;
+        }
+        .page-header {
+            padding: 0 70px;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 3em;
+            font-weight: bold;
+            border-style: none none solid none;
+            border-color: lightyellow;
+            border-width: 3px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        .page-header>p {
+            margin: 0.5em;
+        }
+        .main-page {
+            padding: 10px 20px;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .main-article {
+            padding: 2em 6em;
+        }
+    </style>
+</head>
+
+<body class="main-background">
+<div class="wrapper">
+    <div class="main-page">
+        <header class="page-header">
+            <p>Login</p>
+        </header>
+        <div class="main-article">
+            <div>
+                <input type="radio" name="useraction" value="login" checked>Login
+                <input type="radio" name="useraction" value="register">Register<br><br>
+                Username:<br>
+                <input type="text" name="username" value="user">
+                <br><br>
+                Password:<br>
+                <input type="text" name="password" value="pass">
+                <br><br>
+                <button type="button" class="button" value="submit" onclick="XMLlogin()">Submit</button>
+            </div>
+            <br>
+            <div id="loginResponse"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function XMLlogin() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if (this.responseText == 'NOT-FOUND') {
+                    document.getElementById("loginResponse").innerHTML = 'Sorry, user not found...';
+                }
+                else if (this.responseText.search('FOUND') != -1) {
+                    document.getElementById("loginResponse").innerHTML = 'User registered on ' + this.responseText.substr(6);
+
+                }
+                else if (this.responseText == 'ALREADY') {
+                    document.getElementById("loginResponse").innerHTML = 'Username is already taken.';
+                }
+                else if (this.responseText == 'ADDED') {
+                    document.getElementById("loginResponse").innerHTML = 'User has been added to database';
+                }
+                else {
+                    alert("PANICA!!!")
+                }
+            }
+        };
+        let username = document.getElementsByName('username')[0].value;
+        let password = document.getElementsByName('password')[0].value;
+        let actions = document.getElementsByName('useraction');
+        let action;
+        for (let a of actions) {
+            if (a.checked) {
+                action = a.value
+            }
+        }
+        if (action == 'login')
+            xhttp.open("GET", "/login?username=" + username + "&password=" + password, true);
+        else if (action == 'register')
+            xhttp.open("POST", "/register?username=" + username + "&password=" + password, true);
+        else {
+            alert('Problema Radio');
+            return;
+        }
+        xhttp.send();
+    }
+</script>
+
+</body>
+</html>

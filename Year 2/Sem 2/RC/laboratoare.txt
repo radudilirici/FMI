@@ -1,0 +1,50 @@
+		Lab 1
+
+nota: 50p laborator
+	  50p curs
+
+sergiu.nisioi@gmail.com
+https://github.com/senisioi/computer-networks
+
+micro servicii
+subnet: 10.1.x.x
+NAT - network adress translation
+gateway - comunicare cu reteaua (switch / router / etc.)
+
+		Lab 2
+
+nu avem voie sa punem TAB-uri!!!
+
+docker ps
+docker-compose - aplicatie de linux care ne ajuta sa construim containere in docker
+
+de instalat docker-compose separat (pt ca sunt pe windows)
+in computer-networks:
+docker-compose up -d
+docker-compose ps
+docker-compose --version
+
+--------------------------------- tama1: de instalat docker si docker-compose
+                                         de facut docker-compose up -d in computer-network - s-ar putea sa nu mearga
+
+docker-compose exec rt1 bash
+#ifconfig  => ip-ul retelei locale in docker
+
+		Lab 3
+
+docker-compose up -d  # -d pt detach
+                      # sa ruleze comanda intr-un alt terminal
+
+docker-compose exec rt2 bash  # pornesc un container
+ping rt1
+daca nu as avea ping instalat -> in docker/Dockerfile-small ar trebiu sa pun la final:
+RUN apt_get update && apt_get install -y iputils -ping
+
+de la rt1 nu pot da ping la rt4 pt ca nu sunt pe aceeasi retea
+pentru ca rt3 e legat la 2 retele pot da ping si la rt1 si la rt4
+putem sa il facem pe rt3 router a.i. sa putem sa dam ping de la rt1 la rt4 (o sa treaca prin rt3 pe drum)
+
+tcpdump -Sntv  # monitorizeaza traficul pe retea
+--------------------------------- *lab2_1.png*
+imi trebuie inca 20 de bytes ca sa pun informatiile (de unde trimit. unde ma duc)
+daca modific cat trimit cu -s limita este 1500 (mut - maximum transmited unit)
