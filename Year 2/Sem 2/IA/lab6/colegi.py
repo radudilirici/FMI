@@ -12,16 +12,18 @@ class Nod:
             self.h = 0
             rand_scop = scop[1] // 2
             rand_nod = info[1] // 2
-            # daca nu suntem pe acelasi rand cu colegul scop, calculam distanta pana in spatele clase
+            # daca nu suntem pe acelasi rand cu colegul scop, calculam distanta pana in spatele clasei
             # ca sa punem da biletul mai departe, iar dupa adunam cu distanta de acolo la scop
             if rand_nod != rand_scop:
                 if info[0] < N - 2:
                     self.h += abs(N - 2 - info[0])  # distanta pana in spatele clasei
-                    i_nou = N - 2  # consideram ca noul coleg e in spatele clasei
+                    i_nou = N - 2  # acum consideram ca noul coleg e in spatele clasei
                 else:
                     i_nou = info[0]
             else:
                 i_nou = info[0]
+            # am calculat distanta pana la randul pe care e colegul scop
+            # daca colegii sunt pe acelasi rand de banci calculam distanta manhattan
             self.h += abs(scop[0] - i_nou) + abs(scop[1] - info[1])
 
     def __str__(self):
