@@ -94,3 +94,48 @@ from employees
 join departments using(department_id)
 group by department_name
 having avg(salary) = (select max(avg(salary)) from employees group by department_id);
+
+-- 28
+select
+    (select count(employee_id) from employees) "Total",
+    (select count(employee_id) from employees where to_char(hire_date, 'yyyy') = '1997') "1997",
+    (select count(employee_id) from employees where to_char(hire_date, 'yyyy') = '1998') "1998",
+    (select count(employee_id) from employees where to_char(hire_date, 'yyyy') = '1999') "1999",
+    (select count(employee_id) from employees where to_char(hire_date, 'yyyy') = '2000') "2000"
+from dual;
+
+-- 30
+select d.department_id, d.department_name, a.summ
+from (
+    select department_id, sum(salary) as summ
+    from employees
+    group by department_id
+) a
+inner join departments d on (a.department_id = d.department_id);
+
+-- 31
+select e.first_name, e.salary, e.department_id, a.mediu
+from (
+    select department_id, round(avg(salary)) as mediu
+    from employees
+    group by department_id
+) a
+inner join employees e  on (e.department_id = a.department_id);
+
+
+-- 32
+select e.first_name, e.salary, e.department_id, a.mediu, a.nr
+from (
+    select department_id, round(avg(salary)) as mediu, count(employee_id) as nr
+    from employees
+    group by department_id
+) a
+inner join employees e  on (e.department_id = a.department_id);
+
+-- 33
+select d.department_name, e.last_name, a.minim
+from (select department_id, min(salary) as minim
+      from employees
+      group by department_id) a
+inner join departments d on (d.department_id = a.department_id)
+join employees e on (d.department_id = e.department_id and e.salary = a.minim);
