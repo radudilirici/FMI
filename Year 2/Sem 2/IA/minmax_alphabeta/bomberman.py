@@ -4,6 +4,7 @@
 import time
 import copy
 
+# directiile posibile. prima pozite este pentru y, a doua pentru x
 l_directii = [[-1, 0], [0, 1], [1, 0], [0, -1]]
 
 
@@ -19,8 +20,6 @@ class Joc:
     JMAX = None
     BMIN = None
     BMAX = None
-    GOL = ' '
-    ZID = '#'
 
     def __init__(self, tabla=None, vieti_jmin=None, vieti_jmax=None):
         if tabla is not None:
@@ -28,6 +27,7 @@ class Joc:
             self.vieti_jmin = vieti_jmin
             self.vieti_jmax = vieti_jmax
         else:
+            # harta e putin modificata pentru a putea vedea mai rapid rezultatele
             self.matr = [['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'],
                          ['#','1',' ',' ',' ',' ','#',' ',' ',' ',' ',' ',' ',' ','#',' ',' ',' ',' ',' ',' ','#'],
                          ['#',' ','#',' ',' ',' ','#','#','#',' ',' ',' ','#','#','#','#',' ','#','#','#','#','#'],
@@ -49,20 +49,20 @@ class Joc:
         # sau 'False' daca nu s-a terminat jocul
         # In cazul in care jucatorul e blocat (nu se mai poate misca in nicio casuta) consideram ca a pierdut
 
-        if self.vieti_jmin == 0 and self.vieti_jmax == 0:
+        if self.vieti_jmin <= 0 and self.vieti_jmax <= 0:
             return 'remiza'
-        elif self.vieti_jmin == 0:
+        elif self.vieti_jmin <= 0:
             return self.JMAX
-        elif self.vieti_jmax == 0:
+        elif self.vieti_jmax <= 0:
             return self.JMIN
-        elif len(self.mutari(jucator)) == 0:
+        elif len(self.mutari(jucator)) == 0:  # nu se mai poate misca
             return self.JMIN if jucator == self.JMAX else self.JMAX
         else:
             return False
 
     def pozitie_caracter(self, c):
-        for i in range(len(self.matr)):
-            for j in range(len(self.matr[i])):
+        for i in range(self.NR_LINII):
+            for j in range(self.NR_COLOANE):
                 if self.matr[i][j] == c:
                     return i, j
         return None
@@ -76,18 +76,20 @@ class Joc:
             i, j = pozitie[0], pozitie[1]
             while self.matr[i][j] != '#':
                 if self.matr[i][j] == self.JMIN:
-                    self.vieti_jmin -= 1
+                    if self.vieti_jmin > 0:
+                        self.vieti_jmin -= 1
                 elif self.matr[i][j] == self.JMAX:
-                    self.vieti_jmax -= 1
+                    if self.vieti_jmax > 0:
+                        self.vieti_jmax -= 1
                 elif self.matr[i][j] == bomba_opusa:
-                    self.explozie((i, j))
-                else:                     # bombele distrug si puterile (vietile in plus)
-                    self.matr[i][j] = '*'  # o marcam pe harta ca sa se vada ce s-a intamplat
+                    self.explozie((i, j))  # bombele care explodeaza detoneaza si bombele la care ajung explozia
+                else:                      # bombele distrug si puterile (vietile in plus)
+                    self.matr[i][j] = '*'  # marcam explozia pe harta ca sa se vada ce s-a intamplat
 
                 i += directie[0]
                 j += directie[1]
 
-        if self.vieti_jmin == 0 or self.vieti_jmax == 0:
+        if self.vieti_jmin <= 0 or self.vieti_jmax <= 0:
             return True
         else:
             return None
@@ -105,13 +107,21 @@ class Joc:
         bomba = self.BMAX if jucator == self.JMAX else self.BMIN
         poz_bomba = self.pozitie_caracter(bomba)
 
-        if self.matr[poz_noua[0]][poz_noua[1]] not in [' ', 'p']:
+        if self.matr[poz_noua[0]][poz_noua[1]] not in [' ', 'p']:  # mutarea nu este valida
+            if poz_noua == poz_bomba:  # daca jucatorul e blocat de propria bomba, o poate declansa si sa mearga acolo
+                if foloseste_bomba:
+                    if self.explozie(poz_bomba):
+                        return True
+                    if self.matr[poz_juc[0]][poz_juc[1]] == jucator:
+                        self.matr[poz_juc[0]][poz_juc[1]] = ' '
+                    self.matr[poz_noua[0]][poz_noua[1]] = jucator
+                    return True
             return False
 
         if foloseste_bomba:
-            if poz_bomba is None:
+            if poz_bomba is None:  # daca nu am pus bomba, o putem acum
                 self.matr[poz_juc[0]][poz_juc[1]] = bomba
-            else:
+            else:                  # altfel, o detonam
                 if self.explozie(poz_bomba):  # daca a murit cineva nu mai misca
                     return True               # motivul e sa se vada mai bine ce s-a intamplat. rezultatul e acelasi
                 if self.matr[poz_juc[0]][poz_juc[1]] == jucator:
@@ -132,6 +142,8 @@ class Joc:
         l_mutari = []
 
         for directie in l_directii:
+            # mutam jucatorul in directia respectiva mai intai fara folosirea bombei, iar apoi cu
+            # in total sunt 4 (directiile) * 2 (folosire bomba) = 8 mutari posibile
             config_noua = Joc(copy.deepcopy(self.matr), self.vieti_jmin, self.vieti_jmax)
             if config_noua.muta_jucator(jucator, directie, False):
                 l_mutari.append(config_noua)
@@ -355,7 +367,8 @@ def main():
     # creare stare initiala
     stare_curenta = Stare(tabla_curenta, Joc.SIMBOLURI_JUC[0], Stare.ADANCIME_MAX)
 
-    print("Introduceti directia (w a s d). Inainte de directie puteti pune un spatiu daca vreti sa lasati o bomba")
+    print("Introduceti directia (w a s d).\n"
+          "Inainte de directie puteti pune un spatiu daca vreti sa lasati o bomba")
 
     directie = [0, 0]
     foloseste_bomba = False
@@ -365,6 +378,12 @@ def main():
     poz_noua = [0, 0]
     while True:
         if stare_curenta.j_curent == Joc.JMIN:
+
+            # testez daca jocul a ajuns intr-o stare finala
+            # si afisez un mesaj corespunzator in caz ca da
+            if afis_daca_final(stare_curenta, Joc.JMIN):
+                break
+
             # muta jucatorul
             raspuns_valid = False
             while not raspuns_valid:
@@ -373,13 +392,14 @@ def main():
 
                     if user_input not in [' w', ' a', ' s', ' d', 'w', 'a', 's', 'd']:
                         print("Input incorect")
-                        print("Introduceti directia (w a s d). Inainte de directie puteti pune un spatiu daca vreti sa lasati o bomba")
+                        print("Introduceti directia (w a s d).\n"
+                              "Inainte de directie puteti pune un spatiu daca vreti sa lasati o bomba")
                         continue
 
-                    if len(user_input) == 1:
+                    if len(user_input) == 1:  # jucatorul doar s-a miscat
                         dir_input = user_input[0]
                         foloseste_bomba = False
-                    else:
+                    else:                     # jucatorul a pus si o bomba (sau a activat-o)
                         dir_input = user_input[1]
                         foloseste_bomba = True
                     if dir_input == 'w':
@@ -408,16 +428,14 @@ def main():
             print("\nTabla dupa mutarea jucatorului")
             print(str(stare_curenta))
 
-            # testez daca jocul a ajuns intr-o stare finala
-            # si afisez un mesaj corespunzator in caz ca da
-            if afis_daca_final(stare_curenta, Joc.JMIN):
-                break
-
             # S-a realizat o mutare. Schimb jucatorul cu cel opus
             stare_curenta.j_curent = stare_curenta.jucator_opus()
 
         # --------------------------------
         else:  # jucatorul e JMAX (calculatorul)
+
+            if afis_daca_final(stare_curenta, Joc.JMAX):
+                break
 
             # preiau timpul in milisecunde de dinainte de mutare
             t_inainte = int(round(time.time() * 1000))
@@ -425,6 +443,10 @@ def main():
                 stare_actualizata = min_max(stare_curenta)
             else:
                 stare_actualizata = alpha_beta(-5000, 5000, stare_curenta)
+            if not stare_actualizata.stare_aleasa:
+                print("Eroare")
+                break
+
             stare_curenta.tabla_joc = stare_actualizata.stare_aleasa.tabla_joc
             print("Tabla dupa mutarea calculatorului")
             print(str(stare_curenta))
@@ -435,9 +457,6 @@ def main():
             print(f"Vieti {Joc.JMIN}: {stare_curenta.tabla_joc.vieti_jmin}")
             print(f"Vieti {Joc.JMAX}: {stare_curenta.tabla_joc.vieti_jmax}")
             print()
-
-            if afis_daca_final(stare_curenta, Joc.JMAX):
-                break
 
             # S-a realizat o mutare. Schimb jucatorul cu cel opus
             stare_curenta.j_curent = stare_curenta.jucator_opus()

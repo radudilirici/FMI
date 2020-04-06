@@ -4,21 +4,24 @@
 import time
 import copy
 
+# directiile posibile. prima pozite este pentru y, a doua pentru x
 directii = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
 
 
-def fill(matrice, pozitie, dirs, jucator, jucator_opus):
+def fill(matrice, pozitie, dirs, jucator):
+    # daca avem X 0 0 0 0 X o sa inlocuiasca 0-urile cu X-uri
+    # primeste pozitia unuia dintre X-uri si directiile de unde a ajuns
+    # (daca primeste pozitia primului X, directia este stanga [0, -1])
     for d in dirs:
         i, j = pozitie[0], pozitie[1]
         matrice[i][j] = jucator
         i -= d[0]
         j -= d[1]  # mergem inapoi
 
-        while matrice[i][j] == jucator_opus:
+        while matrice[i][j] != jucator:
             matrice[i][j] = jucator
             i -= d[0]
             j -= d[1]
-        matrice[i][j] = jucator
 
 
 class Joc:
@@ -93,13 +96,12 @@ class Joc:
         return pos
 
     def mutari(self, jucator):
-        jucator = self.JMIN if jucator == self.JMAX else self.JMAX
         l_mutari = []
 
         posibilitati = self.posibilitati(jucator)
         for pozitie, dirs in posibilitati.items():
             matr_noua = copy.deepcopy(self.matr)
-            fill(matr_noua, pozitie, dirs, jucator, jucator)
+            fill(matr_noua, pozitie, dirs, jucator)
             l_mutari.append(Joc(matr_noua))
 
         return l_mutari
@@ -250,8 +252,8 @@ def alpha_beta(alpha, beta, stare):
     return stare
 
 
-def afis_daca_final(stare_curenta):
-    final = stare_curenta.tabla_joc.final(stare_curenta.j_curent)
+def afis_daca_final(stare_curenta, jucator):
+    final = stare_curenta.tabla_joc.final(jucator)
     if final:
         if final == "remiza":
             print("Remiza!")
@@ -306,11 +308,16 @@ def main():
     coloana = -1
     while True:
         if stare_curenta.j_curent == Joc.JMIN:
+            # testez daca jocul a ajuns intr-o stare finala
+            # si afisez un mesaj corespunzator in caz ca da
+            if afis_daca_final(stare_curenta, Joc.JMIN):
+                break
+
             # muta jucatorul
             raspuns_valid = False
             while not raspuns_valid:
                 try:
-                    pos = stare_curenta.tabla_joc.posibilitati(tabla_curenta.JMIN)
+                    pos = stare_curenta.tabla_joc.posibilitati(Joc.JMIN)
                     print("Pozitii posibile: ")
                     for p in pos.keys():
                         print(p, end=' ')
@@ -332,22 +339,20 @@ def main():
 
             # datele sunt corecte
             dirs = pos[(linie, coloana)]
-            fill(stare_curenta.tabla_joc.matr, (linie, coloana), dirs, tabla_curenta.JMIN, tabla_curenta.JMAX)
+            fill(stare_curenta.tabla_joc.matr, (linie, coloana), dirs, Joc.JMIN)
 
             # afisarea starii jocului in urma mutarii utilizatorului
             print("\nTabla dupa mutarea jucatorului")
             print(str(stare_curenta))
-
-            # testez daca jocul a ajuns intr-o stare finala
-            # si afisez un mesaj corespunzator in caz ca da
-            if afis_daca_final(stare_curenta):
-                break
 
             # S-a realizat o mutare. Schimb jucatorul cu cel opus
             stare_curenta.j_curent = stare_curenta.jucator_opus()
 
         # --------------------------------
         else:  # jucatorul e JMAX (calculatorul)
+
+            if afis_daca_final(stare_curenta, Joc.JMAX):
+                break
 
             # preiau timpul in milisecunde de dinainte de mutare
             t_inainte = int(round(time.time() * 1000))
@@ -362,9 +367,6 @@ def main():
             # preiau timpul in milisecunde de dupa mutare
             t_dupa = int(round(time.time() * 1000))
             print("Calculatorul a \"gandit\" timp de " + str(t_dupa - t_inainte) + " milisecunde.")
-
-            if afis_daca_final(stare_curenta):
-                break
 
             # S-a realizat o mutare. Schimb jucatorul cu cel opus
             stare_curenta.j_curent = stare_curenta.jucator_opus()
