@@ -367,15 +367,15 @@ def main():
     # creare stare initiala
     stare_curenta = Stare(tabla_curenta, Joc.SIMBOLURI_JUC[0], Stare.ADANCIME_MAX)
 
-    print("Introduceti directia (w a s d).\n"
-          "Inainte de directie puteti pune un spatiu daca vreti sa lasati o bomba")
+    print("Intructiuni:\n"
+          "Introduceti directia (w a s d) si apasati 'Enter'.\n"
+          "Daca doriti sa plasati/detonati o bomba puneti un 'space' inainte de directie.\n"
+          "Puteti avea o singura bomba plasata la un moment dat.\n"
+          "Puterile 'p' va protejeaza de o explozie. Acestea se pot cumula.\n"
+          "Bombele jucatorului 1 sunt marcare cu '!', iar cele ale jucatorului 2 cu '@'.\n"
+          "Daca o bomba este atinsa de o explozie, explodeaza si aceasta.")
 
     directie = [0, 0]
-    foloseste_bomba = False
-    poz_juc = [0, 0]
-    bomba = ''
-    poz_bomba = [0, 0]
-    poz_noua = [0, 0]
     while True:
         if stare_curenta.j_curent == Joc.JMIN:
 
