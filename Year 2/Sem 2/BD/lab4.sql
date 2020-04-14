@@ -17,16 +17,15 @@ from employees
 group by job_id;
 
 -- 5
-select distinct manager_id
-from employees
-where manager_id is not null;
+select count(distinct manager_id)
+from employees;
 
 -- 6
 select max(salary) - min(salary) "Diferenta salarii"
 from employees;
 
 -- 7
-select department_name, city, count(*) "Nr angajati"
+select department_name, city, count(*) "Nr angajati", avg(salary)
 from departments d
 join locations l on(l.location_id = d.location_id)
 join employees e on(e.department_id = d.department_id)
@@ -95,6 +94,66 @@ join departments using(department_id)
 group by department_name
 having avg(salary) = (select max(avg(salary)) from employees group by department_id);
 
+-- 18
+-- a)
+select department_id, department_name, count(employee_id)
+from departments
+join employees using(department_id)
+group by department_id, department_name
+having count(employee_id) < 4;
+-- b)
+select department_id, department_name, count(employee_id)
+from departments
+join employees using(department_id)
+group by department_id, department_name
+having count(employee_id) = (select max(count(employee_id)) from employees group by department_id);
+
+-- 19
+select last_name, hire_date
+from employees
+where to_char(hire_date, 'dd') = (select to_char(hire_date, 'dd') from employees group by to_char(hire_date, 'dd')
+                                  having count(to_char(hire_date, 'dd')) = (select max(count(employee_id)) from employees group by to_char(hire_date, 'dd')));
+
+-- 20
+select count(count(employee_id))
+from employees
+group by department_id
+having count(employee_id) >= 15;
+
+-- 21
+select department_id, sum(salary)
+from employees
+where department_id != 30
+group by department_id
+having count(employee_id) > 10;
+
+-- 22
+select a.department_id, a.department_name, a.cnt, a.avg_salary, last_name, salary, job_id
+from (select department_id, department_name, count(employee_id) cnt, round(avg(salary), 1) avg_salary
+      from employees
+      outer right join departments using(department_id)
+      group by department_id, department_name) a
+join employees e on(e.department_id = a.department_id);
+
+-- 23
+select city "Oras", department_id "Departmanet", job_id "Job", sum(salary) "Suma salarii"
+from employees
+join departments using(department_id)
+join locations using(location_id)
+where department_id > 80
+group by department_id, city, job_id;
+
+-- 24
+select last_name, count(last_name) "Nr joburi"
+from job_history jh
+join employees using(employee_id)
+group by last_name
+having count(last_name) >= 2;
+
+-- 25
+select avg(coalesce(commission_pct, 0))
+from employees;
+
 -- 28
 select
     (select count(employee_id) from employees) "Total",
@@ -139,3 +198,11 @@ from (select department_id, min(salary) as minim
       group by department_id) a
 inner join departments d on (d.department_id = a.department_id)
 join employees e on (d.department_id = e.department_id and e.salary = a.minim);
+
+-- 34
+select a.department_id, a.department_name, a.cnt, a.avg_salary, last_name, salary, job_id
+from (select department_id, department_name, count(employee_id) cnt, round(avg(salary), 1) avg_salary
+      from employees
+      outer right join departments using(department_id)
+      group by department_id, department_name) a
+join employees e on(e.department_id = a.department_id);
