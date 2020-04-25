@@ -1,15 +1,15 @@
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+package modele;
+
+import servicii.EvidentaAngajati;
+import servicii.EvidentaPacienti;
+
 import java.util.Date;
-import java.util.Locale;
 
 public class Programare {
 
     private Medic medic;
     private Pacient pacient;
     private Date data;
-    private static final DateFormat dateFormat = new SimpleDateFormat("d M yyyy, HH:mm", Locale.ENGLISH);
 
     public Programare(Medic medic, Pacient pacient, Date data) {
         this.medic = medic;
@@ -20,12 +20,17 @@ public class Programare {
     public Programare(Medic medic, Pacient pacient, String data) {
         this.medic = medic;
         this.pacient = pacient;
-        try {
-            this.data = dateFormat.parse(data);
-        }
-        catch (ParseException e) {
-            System.out.println("Format data incorect");
-        }
+        this.data = DateParser.parseDate(data);
+    }
+
+    public Programare(String cnpMedic, String cnpPacient, String data) {
+        EvidentaAngajati angajati = EvidentaAngajati.getInstance();
+        EvidentaPacienti pacienti = EvidentaPacienti.getInstance();
+        Medic medic = (Medic) angajati.getAngajat(cnpMedic);
+        Pacient pacient = pacienti.getPacient(cnpPacient);
+        this.medic = medic;
+        this.pacient = pacient;
+        this.data = DateParser.parseDate(data);
     }
 
     public Programare(Programare programare) {
@@ -52,12 +57,7 @@ public class Programare {
 
     public int comparaData(String data) {
         Date dataAux = null;
-        try {
-            dataAux = dateFormat.parse(data);
-        }
-        catch (ParseException e) {
-            System.out.println("Format data incorect");
-        }
+        dataAux = DateParser.parseDate(data);
         if (dataAux == null) {
             return 0;
         }
@@ -69,7 +69,7 @@ public class Programare {
         return "programare: {" +
                 "medic: " + this.medic.getPrenume() + " " + this.medic.getNume() +
                 ", pacient: " + this.pacient.getPrenume() + " " + this.pacient.getNume() +
-                ", data: " + dateFormat.format(this.data) + "}";
+                ", data: " + DateParser.formatDate(this.data) + "}";
     }
 
     @Override

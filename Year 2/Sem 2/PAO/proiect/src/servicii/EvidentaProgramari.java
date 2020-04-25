@@ -1,13 +1,24 @@
+package servicii;
+
+import modele.Medic;
+import modele.Pacient;
+import modele.Programare;
+
 import java.util.*;
+
+import static servicii.CSVHandler.citesteCSV;
 
 public final class EvidentaProgramari {
     // clasa Singleton pentru ca vrem sa avem toate programarile in acelasi loc
-    private static final EvidentaProgramari INSTANCE = new EvidentaProgramari();
+    private static final EvidentaProgramari INSTANCE;
     private static List<Programare> programari;
 
-    public EvidentaProgramari() {
-        programari = new ArrayList<Programare>();
+    static {
+        INSTANCE = new EvidentaProgramari();
+        programari = new ArrayList<>();
     }
+
+    private EvidentaProgramari() {}
 
     public static EvidentaProgramari getInstance() {
         return INSTANCE;
@@ -20,6 +31,16 @@ public final class EvidentaProgramari {
         }
         catch (NullPointerException e) {
             System.out.println(e);
+        }
+    }
+
+    public void adaugaProgramariFisier(String path) {
+        List<String[]> csv = citesteCSV(path);
+        for (String[] p: csv) {
+            if (p.length != 3) {
+                continue;
+            }
+            this.adaugaProgramare(new Programare(p[0], p[1], p[2]));
         }
     }
 
@@ -95,6 +116,5 @@ public final class EvidentaProgramari {
             s.append(a.toString()).append("\n");
         }
         return s.toString();
-//        return Arrays.toString(programari.toArray(new Programare[0]));
     }
 }

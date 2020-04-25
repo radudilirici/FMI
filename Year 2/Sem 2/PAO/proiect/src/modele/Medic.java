@@ -1,3 +1,5 @@
+package modele;
+
 public class Medic extends Angajat {
 
     private String specializare;

@@ -1,15 +1,24 @@
+package servicii;
+
+import modele.Angajat;
+import modele.Medic;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static servicii.CSVHandler.citesteCSV;
 
 public class EvidentaAngajati {
 
-    private static final EvidentaAngajati INSTANCE = new EvidentaAngajati();
+    private static final EvidentaAngajati INSTANCE;
     private static List<Angajat> angajati;
 
-    public EvidentaAngajati() {
-        angajati = new ArrayList<Angajat>();
+    static {
+        INSTANCE = new EvidentaAngajati();
+        angajati = new ArrayList<>();
     }
+
+    private EvidentaAngajati() {}
 
     public static EvidentaAngajati getInstance() {
         return INSTANCE;
@@ -21,6 +30,21 @@ public class EvidentaAngajati {
         }
         catch (NullPointerException e) {
             System.out.println(e);
+        }
+    }
+
+    public void adaugaAngajatiFisier(String path, boolean medic) {
+        List<String[]> csv = citesteCSV(path);
+        for (String[] a: csv) {
+            if (a.length != 9) {
+                continue;
+            }
+            if (medic) {
+                this.adaugaAngajat(new Medic(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]));
+            } else {
+                this.adaugaAngajat(new Angajat(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8]));
+            }
+
         }
     }
 
@@ -41,7 +65,7 @@ public class EvidentaAngajati {
                 return a;
             }
         }
-        System.out.println("Nu exista angajatul");
+        System.out.println("Angajatul nu exista");
         return null;
     }
 
@@ -51,7 +75,7 @@ public class EvidentaAngajati {
                 return a;
             }
         }
-        System.out.println("Nu exista angajatul");
+        System.out.println("Angajatul nu exista");
         return null;
     }
 
@@ -61,7 +85,7 @@ public class EvidentaAngajati {
                 return a;
             }
         }
-        System.out.println("Nu exista angajatul");
+        System.out.println("Angajatul nu exista");
         return null;
     }
 
@@ -72,6 +96,5 @@ public class EvidentaAngajati {
             s.append(a.toString()).append("\n");
         }
         return s.toString();
-//        return Arrays.toString(angajati.toArray(new Angajat[0]));
     }
 }

@@ -1,15 +1,23 @@
+package servicii;
+
+import modele.Pacient;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static servicii.CSVHandler.citesteCSV;
 
 public class EvidentaPacienti {
 
-    private static final EvidentaPacienti INSTANCE = new EvidentaPacienti();
+    private static final EvidentaPacienti INSTANCE;
     private static List<Pacient> pacienti;
 
-    public EvidentaPacienti() {
-        pacienti = new ArrayList<Pacient>();
+    static {
+        INSTANCE = new EvidentaPacienti();
+        pacienti = new ArrayList<>();
     }
+
+    private EvidentaPacienti() {}
 
     public static EvidentaPacienti getInstance() {
         return INSTANCE;
@@ -21,6 +29,16 @@ public class EvidentaPacienti {
         }
         catch (NullPointerException e) {
             System.out.println(e);
+        }
+    }
+
+    public void adaugaPacientiFisier(String path) {
+        List<String[]> csv = citesteCSV(path);
+        for (String[] p: csv) {
+            if (p.length != 3) {
+                continue;
+            }
+            this.adaugaPacient(new Pacient(p[0], p[1], p[2]));
         }
     }
 
@@ -41,7 +59,7 @@ public class EvidentaPacienti {
                 return a;
             }
         }
-        System.out.println("Nu exista Pacientul");
+        System.out.println("Pacientul nu exista");
         return null;
     }
 
@@ -51,7 +69,7 @@ public class EvidentaPacienti {
                 return a;
             }
         }
-        System.out.println("Nu exista Pacientul");
+        System.out.println("Pacientul nu exista");
         return null;
     }
 
@@ -61,7 +79,7 @@ public class EvidentaPacienti {
                 return a;
             }
         }
-        System.out.println("Nu exista Pacientul");
+        System.out.println("Pacientul nu exista");
         return null;
     }
 
@@ -72,6 +90,5 @@ public class EvidentaPacienti {
             s.append(a.toString()).append("\n");
         }
         return s.toString();
-//        return Arrays.toString(pacienti.toArray(new Pacient[0]));
     }
 }

@@ -1,3 +1,5 @@
+package modele;
+
 public class Pacient extends Persoana {
 
     private String[] programari;
@@ -6,7 +8,4 @@ public class Pacient extends Persoana {
         super(CNP, nume, prenume);
     }
 
-    public void addProgramare() {
-
-    }
 }

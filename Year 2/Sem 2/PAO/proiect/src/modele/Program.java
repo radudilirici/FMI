@@ -1,3 +1,5 @@
+package modele;
+
 public class Program {
 
     private String programLuni;

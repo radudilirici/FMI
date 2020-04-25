@@ -1,4 +1,6 @@
-public class Angajat extends Persoana{
+package modele;
+
+public class Angajat extends Persoana {
 
     private String profesie;
     private Program program;
