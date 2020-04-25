@@ -136,7 +136,41 @@ select employee_id, last_name, hire_date, salary, manager_id
 from employees
 start with employee_id = 114
 connect by prior employee_id = manager_id;
+
+-- 16
+select employee_id, manager_id, last_name, level
+from employees
+where level >= 3  -- De Haan e pe nivelul 1
+start with last_name = 'De Haan'
+connect by prior employee_id = manager_id;
+
+-- 17
+select employee_id, manager_id, last_name, level
+from employees e
+start with employee_id = e.employee_id
+connect by prior manager_id = employee_id;
+
+-- 18
+select employee_id, manager_id, last_name, salary, level
+from employees
+where salary > 5000
+start with salary = (select max(salary) from employees)
+connect by prior employee_id = manager_id;
                 
+-- 20
+with subs as (
+    select employees.*, level "lvl"
+    from employees
+    where level >= 2
+    start with last_name = 'King'
+    connect by prior employee_id = manager_id
+    order by hire_date)
+select employee_id, manager_id, last_name, first_name, job_id, hire_date, level
+from subs
+where to_char(hire_date, 'yyyy') != '1970'
+start with "lvl" = 2
+connect by prior employee_id = manager_id;    
+
 -- 21 - not working !!!
 select * from employees
 where rownum <= 10
@@ -147,6 +181,15 @@ select * from (
   select * from employees
   order by salary desc)
 where rownum <= 10;
+
+-- 22
+select job_title, "joburi".*
+from (
+    select job_id, avg(salary) from employees
+    group by job_id
+    order by avg(salary)) "joburi"
+join jobs j on(j.job_id = "joburi".job_id)
+where rownum <= 3;
                 
 -- 23
 select 'departamentul ' || department_name || ' este condus de ' ||  nvl(to_char(departments.manager_id),'nimeni') || ' si ' ||
