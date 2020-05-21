@@ -1,0 +1,4 @@
+Calculatorul a "gandit" timp de 3 milisecunde.
+
+Drum de cost minim: 
+ionel ^ andrei >> oana > victor >> mara > dorel v dragos 

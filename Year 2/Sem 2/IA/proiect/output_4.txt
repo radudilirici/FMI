@@ -1,0 +1,4 @@
+Calculatorul a "gandit" timp de 7 milisecunde.
+
+Drum de cost minim: 
+ionel > alina v diana v costin v simona v razvan v andrei >> oana ^ radu > patricia v victor v nicoleta >> maria > gabi ^ dorel ^ elena < gigel ^ tamara > dragos 
