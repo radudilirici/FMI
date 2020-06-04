@@ -112,6 +112,10 @@ public final class EvidentaProgramari {
         return lProgramari.toArray(new Programare[0]);
     }
 
+    public List<Programare> getProgramari() {
+        return programari;
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();

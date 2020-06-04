@@ -3,6 +3,8 @@ package servicii;
 import com.sun.istack.internal.NotNull;
 import modele.Angajat;
 import modele.Medic;
+import modele.Pacient;
+import modele.Programare;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class DbHandler {
             stmt = connection.createStatement();
             isResultSet = stmt.execute(query);
             if (isResultSet) {
+                CSVHandler.logCSV("", query);
                 return stmt;
             }
         } catch (SQLException e ) {
@@ -60,7 +63,12 @@ public class DbHandler {
                     String prenume = rslt.getString("prenume");
                     String profesie = rslt.getString("profesie");
                     String program = rslt.getString("program");
-                    String[] programList = program.split(",");
+                    String[] programList;
+                    if (program != null) {
+                        programList = program.split(",");
+                    } else {
+                        programList = new String[]{"", "", "", "", ""};
+                    }
 
                     angajati.add(new Angajat(cnp, nume, prenume, profesie, programList));
                 }
@@ -101,7 +109,12 @@ public class DbHandler {
                     String prenume = rslt.getString("prenume");
                     String specializare = rslt.getString("specializare");
                     String program = rslt.getString("program");
-                    String[] programList = program.split(",");
+                    String[] programList;
+                    if (program != null) {
+                        programList = program.split(",");
+                    } else {
+                        programList = new String[]{"", "", "", "", ""};
+                    }
 
                     medici.add(new Medic(cnp, nume, prenume, specializare, programList));
                 }
@@ -122,6 +135,78 @@ public class DbHandler {
                 medic.getPrenume() + "'," + "'" +
                 medic.getSpecializare() + "'," + "'" +
                 medic.getProgramString() + "');";
+        executaQuery(query);
+    }
+
+    public static List<Pacient> citestePacienti() {
+
+        Statement stmt = null;
+        ResultSet rslt = null;
+        String query = "select * from pacienti;";
+        List<Pacient> pacienti = new ArrayList<>();
+
+        stmt = executaQuery(query);
+        if (stmt != null) {
+            try {
+                rslt = stmt.getResultSet();
+                while (rslt.next()) {
+                    String cnp = rslt.getString("cnp");
+                    String nume = rslt.getString("nume");
+                    String prenume = rslt.getString("prenume");
+
+                    pacienti.add(new Pacient(cnp, nume, prenume));
+                }
+                stmt.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                return null;
+            }
+        }
+        return pacienti;
+    }
+
+    public static void adaugaPacient(@NotNull Pacient pacient) {
+
+        String query = "insert into pacienti (cnp,nume,prenume) values ('" +
+                pacient.getCNP() + "'," + "'" +
+                pacient.getNume() + "'," + "'" +
+                pacient.getPrenume() + "');";
+        executaQuery(query);
+    }
+
+    public static List<Programare> citesteProgramari() {
+
+        Statement stmt = null;
+        ResultSet rslt = null;
+        String query = "select * from programari;";
+        List<Programare> programari = new ArrayList<>();
+
+        stmt = executaQuery(query);
+        if (stmt != null) {
+            try {
+                rslt = stmt.getResultSet();
+                while (rslt.next()) {
+                    String cnp_m = rslt.getString("cnp_medic");
+                    String cnp_p = rslt.getString("cnp_pacient");
+                    String data = rslt.getString("data");
+
+                    programari.add(new Programare(cnp_m, cnp_p, data));
+                }
+                stmt.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                return null;
+            }
+        }
+        return programari;
+    }
+
+    public static void adaugaProgramare(@NotNull Programare programare) {
+
+        String query = "insert into programari (cnp_medic,cnp_pacient,data) values ('" +
+                programare.getMedic().getCNP() + "'," + "'" +
+                programare.getPacient().getCNP() + "'," + "'" +
+                programare.getDataFormated() + "');";
         executaQuery(query);
     }
 }

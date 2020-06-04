@@ -51,6 +51,10 @@ public class Programare {
         return data;
     }
 
+    public String getDataFormated() {
+        return DateParser.formatDate(data);
+    }
+
     public int comparaData(Date data) {
         return this.data.compareTo(data);
     }

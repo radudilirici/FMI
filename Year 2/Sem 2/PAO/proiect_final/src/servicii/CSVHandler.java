@@ -52,7 +52,7 @@ public class CSVHandler {
         }
     }
 
-    private static void logCSV(String mode, String file) {
+    public static void logCSV(String mode, String file) {
         /**
          * 'mode' trebuie sa fie 'r' sau 'w'
          */
@@ -62,7 +62,7 @@ public class CSVHandler {
         } else if (mode.equals("w")) {
             mode = "write in ";
         } else {
-            return;
+            mode = "";
         }
         sb.append(mode).append(file).append(",").append(DateParser.formatDate(new Date()));
         try {

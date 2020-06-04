@@ -1,6 +1,7 @@
 import modele.*;
 import servicii.*;
 
+import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
@@ -14,8 +15,8 @@ public class Main {
         DbHandler.connect();
 
         //angajati
-        List<Angajat> dba = DbHandler.citesteAngajati();
         EvidentaAngajati angajati = EvidentaAngajati.getInstance();
+        List<Angajat> dba = DbHandler.citesteAngajati();
         for (Angajat a: dba) {
             angajati.adaugaAngajat(a);
         }
@@ -32,25 +33,37 @@ public class Main {
         Medic medic1 = (Medic) angajati.getAngajat("cnp1");
         Medic medic2 = (Medic) angajati.getAngajat("cnp2");
 
-        System.out.println("Medic2:");
+
+        System.out.println("Medic2");
         System.out.println(medic2 + "\n");
 
         // pacienti
         EvidentaPacienti pacienti = EvidentaPacienti.getInstance();
-        pacienti.adaugaPacientiFisier("src/date/pacienti.csv");
+        List<Pacient> dbp = DbHandler.citestePacienti();
+        for (Pacient p: dbp) {
+            pacienti.adaugaPacient(p);
+        }
+        System.out.println("Pacienti");
+        System.out.println(pacienti);
 
         Pacient pacient1 = pacienti.getPacient("cnp4");
         Pacient pacient2 = pacienti.getPacient("cnp5");
 
+//        DbHandler.adaugaPacient(pacient1);
+//        DbHandler.adaugaPacient(pacient2);
+
         // programari
         EvidentaProgramari programari = EvidentaProgramari.getInstance();
-        programari.adaugaProgramariFisier("src/date/programari.csv");
-
-        System.out.println("Programari:");
+        List<Programare> dbpr = DbHandler.citesteProgramari();
+        for (Programare pr: dbpr) {
+            programari.adaugaProgramare(pr);
+        }
+        System.out.println("Programari");
         System.out.println(programari);  // sunt sortate in functie de data
-        System.out.println("Programari medic 1:");
+
+        System.out.println("Programari medic 1");
         System.out.println(Arrays.toString(programari.programariMedic(medic1)) + "\n");
-        System.out.println("Programari pacient 1:");
+        System.out.println("Programari pacient 1");
         System.out.println(Arrays.toString(programari.programariPacient(pacient1)) + "\n");
 
         programari.stergeProgramare(new Programare(medic1, pacient1, "10 5 2020 13:00"));  // programare inexistenta
@@ -59,10 +72,6 @@ public class Main {
 
         System.out.println("\nProgramari dupa stergeri:");
         System.out.println(programari);
-
-        // write
-        CSVHandler.scrieCsv("src/date/out.csv", new String[]{medic1.getNume(), medic1.getPrenume()});
-        CSVHandler.scrieCsv("src/date/out.csv", new String[]{pacient1.getNume(), pacient1.getPrenume()});
 
     }
 }
