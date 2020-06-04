@@ -1,21 +1,19 @@
 package interfata;
 
-import servicii.DbHandler;
-
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
 
     FirstTab firstTab;
-    JPanel secondTab;
+    SecondTab secondTab;
 
     JTabbedPane tabbedPane = new JTabbedPane();
 
     public MainFrame() {
-        super("App");
+        super("Gestionare baza de date");
 
         firstTab = new FirstTab();
-        secondTab = new JPanel();
+        secondTab = new SecondTab();
 
         tabbedPane.add("Citire date", firstTab);
         tabbedPane.add("Adaugare date", secondTab);
