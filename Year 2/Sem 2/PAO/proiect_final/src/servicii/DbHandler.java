@@ -209,4 +209,30 @@ public class DbHandler {
                 programare.getDataFormated() + "');";
         executaQuery(query);
     }
+
+    public static void incarcaDate() {
+
+        EvidentaAngajati angajati = EvidentaAngajati.getInstance();
+        List<Angajat> dba = DbHandler.citesteAngajati();
+        for (Angajat a: dba) {
+            angajati.adaugaAngajat(a);
+        }
+
+        List<Medic> dbm = DbHandler.citesteMedici();
+        for (Medic m: dbm) {
+            angajati.adaugaAngajat(m);
+        }
+
+        EvidentaPacienti pacienti = EvidentaPacienti.getInstance();
+        List<Pacient> dbp = DbHandler.citestePacienti();
+        for (Pacient p: dbp) {
+            pacienti.adaugaPacient(p);
+        }
+
+        EvidentaProgramari programari = EvidentaProgramari.getInstance();
+        List<Programare> dbpr = DbHandler.citesteProgramari();
+        for (Programare pr: dbpr) {
+            programari.adaugaProgramare(pr);
+        }
+    }
 }
