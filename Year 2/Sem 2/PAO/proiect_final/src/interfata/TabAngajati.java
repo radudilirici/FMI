@@ -12,11 +12,11 @@ import java.awt.event.ActionListener;
 public class TabAngajati extends JPanel implements ActionListener {
 
     private JTextField cnp, nume, prenume, profesie, program;
+    JButton addButton, updateButton;
 
     public TabAngajati() {
 
         JPanel cnpPanel, numePanel, prenumePanel, profesiePanel, programPanel;
-        JButton buton;
 
         setLayout(new FlowLayout(FlowLayout.CENTER));
 
@@ -55,16 +55,27 @@ public class TabAngajati extends JPanel implements ActionListener {
         programPanel.add(program);
         add(programPanel);
 
-        buton = new JButton("Adauga");
-        add(buton);
-        buton.addActionListener(this);
+        addButton = new JButton("Adauga");
+        add(addButton);
+        addButton.addActionListener(this);
+
+        updateButton = new JButton("Actualizeaza");
+        add(updateButton);
+        updateButton.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Angajat angajat = new Angajat(cnp.getText(), nume.getText(), prenume.getText(), profesie.getText(), program.getText().split(","));
-        DbHandler.adaugaAngajat(angajat);
         EvidentaAngajati ea = EvidentaAngajati.getInstance();
-        ea.adaugaAngajat(angajat);
+
+        JButton clicked = (JButton) e.getSource();
+        if (clicked == addButton) {
+            DbHandler.adaugaAngajat(angajat);
+            ea.adaugaAngajat(angajat);
+        } else if (clicked == updateButton) {
+            DbHandler.actualizeazaAngajat(angajat);
+            ea.actualizeazaAngajat(angajat);
+        }
     }
 }

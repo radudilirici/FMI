@@ -89,6 +89,24 @@ public class EvidentaAngajati {
         return null;
     }
 
+    public boolean existaAngajat(String CNP) {
+        for (Angajat a: angajati) {
+            if (a.getCNP().equals(CNP)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void stergeAngajat(String CNP) {
+        angajati.remove(getAngajat(CNP));
+    }
+
+    public void actualizeazaAngajat(Angajat angajat) {
+        stergeAngajat(angajat.getCNP());
+        adaugaAngajat(angajat);
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();

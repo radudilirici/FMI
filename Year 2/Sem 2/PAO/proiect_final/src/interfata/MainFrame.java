@@ -6,6 +6,7 @@ public class MainFrame extends JFrame {
 
     FirstTab firstTab;
     SecondTab secondTab;
+    ThirdTab thirdTab;
 
     JTabbedPane tabbedPane = new JTabbedPane();
 
@@ -14,9 +15,11 @@ public class MainFrame extends JFrame {
 
         firstTab = new FirstTab();
         secondTab = new SecondTab();
+        thirdTab = new ThirdTab();
 
         tabbedPane.add("Citire date", firstTab);
-        tabbedPane.add("Adaugare date", secondTab);
+        tabbedPane.add("Adaugare / Actualizare date", secondTab);
+        tabbedPane.add("Stergere date", thirdTab);
 
         add(tabbedPane);
 

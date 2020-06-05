@@ -1,5 +1,6 @@
 package servicii;
 
+import modele.Angajat;
 import modele.Pacient;
 
 import java.util.ArrayList;
@@ -81,6 +82,24 @@ public class EvidentaPacienti {
         }
         System.out.println("Pacientul nu exista");
         return null;
+    }
+
+    public boolean existaPacient(String CNP) {
+        for (Pacient p: pacienti) {
+            if (p.getCNP().equals(CNP)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void stergePacient(String CNP) {
+        pacienti.remove(getPacient(CNP));
+    }
+
+    public void actualizeazaPacient(Pacient pacient) {
+        stergePacient(pacient.getCNP());
+        adaugaPacient(pacient);
     }
 
     @Override

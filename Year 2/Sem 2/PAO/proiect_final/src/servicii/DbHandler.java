@@ -84,11 +84,29 @@ public class DbHandler {
     public static void adaugaAngajat(@NotNull Angajat angajat) {
 
         String query = "insert into angajati (cnp,nume,prenume,profesie,program) values ('" +
-                angajat.getCNP() + "'," + "'" +
-                angajat.getNume() + "'," + "'" +
-                angajat.getPrenume() + "'," + "'" +
-                angajat.getProfesie() + "'," + "'" +
+                angajat.getCNP() + "','" +
+                angajat.getNume() + "','" +
+                angajat.getPrenume() + "','" +
+                angajat.getProfesie() + "','" +
                 angajat.getProgramString() + "');";
+
+        executaQuery(query);
+    }
+
+    public static void actualizeazaAngajat(@NotNull Angajat angajat) {
+
+        String query = "update angajati set " +
+                "nume = '" + angajat.getNume() +
+                "', prenume = '" + angajat.getPrenume() +
+                "', profesie = '" + angajat.getProfesie() +
+                "', program = '" + angajat.getProgramString() +
+                "' where (cnp = '" + angajat.getCNP() + "');";
+
+        executaQuery(query);
+    }
+
+    public static void stergeAngajat(@NotNull String CNP) {
+        String query = "delete from angajati where (cnp = '" + CNP + "');";
         executaQuery(query);
     }
 
@@ -135,6 +153,24 @@ public class DbHandler {
                 medic.getPrenume() + "'," + "'" +
                 medic.getSpecializare() + "'," + "'" +
                 medic.getProgramString() + "');";
+
+        executaQuery(query);
+    }
+
+    public static void actualizeazaMedic(@NotNull Medic medic) {
+
+        String query = "update medici set " +
+                "nume = '" + medic.getNume() +
+                "', prenume = '" + medic.getPrenume() +
+                "', specializare = '" + medic.getSpecializare() +
+                "', program = '" + medic.getProgramString() +
+                "' where (cnp = '" + medic.getCNP() + "');";
+
+        executaQuery(query);
+    }
+
+    public static void stergeMedic(@NotNull String CNP) {
+        String query = "delete from medici where (cnp = '" + CNP + "');";
         executaQuery(query);
     }
 
@@ -171,6 +207,22 @@ public class DbHandler {
                 pacient.getCNP() + "'," + "'" +
                 pacient.getNume() + "'," + "'" +
                 pacient.getPrenume() + "');";
+
+        executaQuery(query);
+    }
+
+    public static void actualizeazaPacient(@NotNull Pacient pacient) {
+
+        String query = "update pacienti set " +
+                "nume = '" + pacient.getNume() +
+                "', prenume = '" + pacient.getPrenume() +
+                "' where (cnp = '" + pacient.getCNP() + "');";
+
+        executaQuery(query);
+    }
+
+    public static void stergePacient(@NotNull String CNP) {
+        String query = "delete from pacienti where (cnp = '" + CNP + "');";
         executaQuery(query);
     }
 
@@ -207,6 +259,16 @@ public class DbHandler {
                 programare.getMedic().getCNP() + "'," + "'" +
                 programare.getPacient().getCNP() + "'," + "'" +
                 programare.getDataFormated() + "');";
+
+        executaQuery(query);
+    }
+
+    public static void stergeProgramare(@NotNull Programare programare) {
+        String query = "delete from programari where " +
+                "(cnp_medic = '" + programare.getMedic().getCNP() +
+                "') and (cnp_pacient = '" + programare.getPacient().getCNP() +
+                "') and (data = '" + programare.getDataFormated() + "');";
+        System.out.println(query);
         executaQuery(query);
     }
 

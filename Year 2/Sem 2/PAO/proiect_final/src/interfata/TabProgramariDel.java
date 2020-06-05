@@ -9,12 +9,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TabProgramari extends JPanel implements ActionListener {
+public class TabProgramariDel extends JPanel implements ActionListener {
 
     private JTextField cnp_m, cnp_p, data;
-    JButton addButton;
+    JButton deleteButton;
 
-    public TabProgramari() {
+    public TabProgramariDel() {
 
         JPanel cnp_mPanel, cnp_pPanel, dataPanel;
 
@@ -41,9 +41,9 @@ public class TabProgramari extends JPanel implements ActionListener {
         dataPanel.add(data);
         add(dataPanel);
 
-        addButton = new JButton("Adauga");
-        add(addButton);
-        addButton.addActionListener(this);
+        deleteButton = new JButton("Sterge");
+        add(deleteButton);
+        deleteButton.addActionListener(this);
     }
 
     @Override
@@ -52,9 +52,9 @@ public class TabProgramari extends JPanel implements ActionListener {
         EvidentaProgramari epr = EvidentaProgramari.getInstance();
 
         JButton clicked = (JButton) e.getSource();
-        if (clicked == addButton) {
-            DbHandler.adaugaProgramare(programare);
-            epr.adaugaProgramare(programare);
+        if (clicked == deleteButton) {
+            DbHandler.stergeProgramare(programare);
+            epr.stergeProgramare(programare);
         }
     }
 }

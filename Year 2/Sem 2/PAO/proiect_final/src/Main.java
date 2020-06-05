@@ -1,14 +1,13 @@
 import modele.*;
 import servicii.*;
 
-import javax.swing.*;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * aplicatia veche, fara interfata
+ */
 public class Main {
-
-
 
     public static void main(String[] args) {
 
