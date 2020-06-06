@@ -2,9 +2,6 @@ package interfata;
 
 import javax.swing.*;
 
-// UPDATE `mydb`.`pacienti` SET `nume` = 'asd', `prenume` = 'ghh' WHERE (`cnp` = 'cnp5');
-// DELETE FROM `mydb`.`pacienti` WHERE (`cnp` = 'cnp5');
-
 public class SecondTab extends JTabbedPane {
 
     TabAngajati tabAngajati;
