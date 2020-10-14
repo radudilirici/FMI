@@ -1,4 +1,3 @@
-// C:\Users\Mr. Wombat\Documents\Facultate\Anul 2\Sem 1\Tehnici Web\Proiect\javascript
 let http = require('http');
 let fs = require('fs');
 let url = require('url');
