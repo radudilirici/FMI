@@ -13,4 +13,3 @@ Shortcuts:
 - [Programare Avansata pe Obiecte (Advanced Programming on Objects)](./Year%202/Sem%202/PAO)
 - [Programare Logica (Logic Programming)](./Year%202/Sem%202/PL)
 - [Retele de Calculatoare (Computer Networks)](./Year%202/Sem%202/RC)
----
