@@ -1,3 +1,11 @@
+*.pdf
+*.npy
+*.h5
+*.idea
+*.pkl
+*.ipynb_checkpoints
+__pycache__
+*\logs
 Year 2/Sem 2/BD/cursuri.txt
 Year 2/Sem 2/RC/laboratoare.txt
 Year 2/Sem 2/RC/computer-networks
@@ -8,4 +16,8 @@ Year 2/Sem 2/PAO/lab4_tema
 Year 2/Sem 2/ML/Mask Detection/test/*
 Year 2/Sem 2/ML/Mask Detection/train/*
 Year 2/Sem 2/ML/Mask Detection/validation/*
-Year 2/Sem 2/ML/Mask Detection/*.h5
+Year 3/Sem 1/DAW
+Year 3/Sem 1/RL/Lab7/MethodToUse.DQN_TARGET_NETWORK.data-00000-of-00001
+Year 3/Sem 1/RL/Lab7/MethodToUse.DQN_TARGET_NETWORK.index
+Year 3/Sem 1/RL/Lab 7/MethodToUse.DQN_TARGET_NETWORK.data-00000-of-00001
+Year 3/Sem 1/RL/Lab 7/MethodToUse.DQN_TARGET_NETWORK.index
